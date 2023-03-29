@@ -16,36 +16,22 @@ public class Main {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
-		HashMap<String, Integer> pokemon = new HashMap<String, Integer>();
-		StringBuilder sb = new StringBuilder();
-		String[] pokename = new String[N+1];
+		HashMap<String, String> pokemon = new HashMap<String, String>();
+		
 		
 		for(int i = 1;i<=N;i++) {
 			String name = br.readLine();
-			pokemon.put(name, i);
-			pokename[i] = name;
+			pokemon.put(name, Integer.toString(i));
+			pokemon.put(Integer.toString(i), name);
+			
 		}
 		
 		for(int i=0;i<M;i++) {
 			String find = br.readLine();
-			if(isNumber(find)) {
-				int index = Integer.parseInt(find);
-				sb.append(pokename[index]+"\n");
-			}
-			else {
-				sb.append(pokemon.get(find)+"\n");
-			}
+			bw.write(pokemon.get(find)+"\n");
 		}
-		System.out.println(sb);
+		bw.flush();
+		bw.close();
 		br.close();
-	}
-	
-	public static boolean isNumber(String find) {
-		try {
-		Double.parseDouble(find);
-		return true;
-		}catch(NumberFormatException e) {
-			return false;
-		}
 	}
 }
