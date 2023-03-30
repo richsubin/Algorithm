@@ -48,12 +48,14 @@ public class Main {
 		
 		for(int a=1;a<=n;a++) {
 			for(int b=1;b<=n;b++) {
-				System.out.print(inputInfo[a][b]+" ");
+				bw.write(String.valueOf(inputInfo[a][b])+" ");
 			}
-			System.out.println();
+			bw.write("\n");
 		}
 		
+		bw.flush();
+		bw.close();
+		br.close();
 	}
 	
-
 }
