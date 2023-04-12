@@ -6,28 +6,26 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int n, m;
+	static int N, M;
 	static int[][] map;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 
-		// NxM 맵 행렬 생성 (1과 0이 값으로 들어옴)
-		map = new int[n][m];
-		for (int i = 0; i < map.length; i++) {
+		//입력 받아서 넣기
+		map = new int[N][M];
+		for (int i = 0; i < N; i++) {
 			String str = br.readLine();
-			for (int j = 0; j < map[i].length; j++) {
-				int num = str.charAt(j) - '0';
-				if (num == 1) {
-					map[i][j] = num;
-				}
+			for (int j = 0; j < M; j++) {
+				map[i][j] = str.charAt(j) - '0';
 			}
 		}
+		
 		// 출발지와 목적지가 같을 경우
-		if (n == 1 && m == 1) {
+		if (N == 1 && M == 1) {
 			System.out.println(1);
 			System.exit(0);
 		}
@@ -36,68 +34,57 @@ public class Main {
 	}
 
 	private static int bfs() {
-		// 방문을 체크하는 3차원 배열
-		int[][][] check = new int[2][n][m];
-		// [0, n, m] : 벽 안부수고 지나가는 방문노드 경로
-		// [1, n, m] : 벽 부수고 지나가는 방문노드 경로
+		//3차원 배열 벽 부쉈는지 안부쉈는지 확인해야함
+		//0->안부숨 1->부숨
+		int[][][] visited = new int[2][N][M];
 
-		// 동서남북
-		int[] ax = { 0, 0, -1, 1 };
-		int[] ay = { -1, 1, 0, 0 };
+		int[] dx = { 0, 0, -1, 1 };
+		int[] dy = { -1, 1, 0, 0 };
 
-		Queue<int[]> q = new LinkedList<>();
-		// 시작 노드를 q에 담기
-		q.offer(new int[] { 0, 0, 0 });
-		// 벽 안부쉈으니까 {0, 0, 0}에 지나온 칸의 개수 1을 값으로 넣기.
-		check[0][0][0] = 1;
+		Queue<int[]> que = new LinkedList<>();
 
-		while (true) {
+		que.offer(new int[] { 0, 0, 0 });
+		//일단 출발지는 무조건 1칸 간거롤 치고가는거임
+		visited[0][0][0] = 1;
 
-			int[] node = q.poll();
-			int w = node[0];// broken wall or unbroken wall
+		while(!que.isEmpty()) {
+
+			int[] node = que.poll();
+			int wall = node[0];
 			int x = node[1];
 			int y = node[2];
 
 			for (int i = 0; i < 4; i++) {
-				int nx = x + ax[i];
-				int ny = y + ay[i];
-				// map과 check에 쓰일 인덱스가 배열의 범위를 벗어나면 무시하기.
-				if (nx >= n || nx < 0 || ny >= m || ny < 0) {
-					continue;
-				}
+				int nx = x + dx[i];
+				int ny = y + dy[i];
 
-				// 다음 노드가 벽이 아닐 때 -> 다음노드의 w가 0인 자리가 비어있다면 (0이라면) - w가 0이면 0인 자리에, 1이면 1인 자리에 방문 체크할 것.
-				if (map[nx][ny] == 0) {
-					if (check[w][nx][ny] == 0) {
-						q.offer(new int[] { w, nx, ny });
-						check[w][nx][ny] = check[w][x][y] + 1;
-						if (nx == n - 1 && ny == m - 1) {
-							return check[w][nx][ny];
+				if(nx<N && nx>=0 && ny<M && ny>=0) {
+					// 다음 칸이 벽이 아님
+					if (map[nx][ny] == 0) {
+						if (visited[wall][nx][ny] == 0) {
+							que.offer(new int[] { wall, nx, ny });
+							visited[wall][nx][ny] = visited[wall][x][y] + 1;
+							if (nx == N - 1 && ny == M - 1) {
+								return visited[wall][nx][ny];
+							}
+							
 						}
-
-					}
-				} 
-				// 다음 노드가 벽일 때 -> 1. w가 1보다 큰 범위를 벗어나게 생겼다면 방문체크와 q에 넣는 것을 제외하도록 하고,
-				// 						2. 벗어나지 않는다면 w+1 에다가 방문체크하고 q에 넣을 것.
-				else {
-					if (w == 0) {
-						if (check[1][nx][ny] == 0) {
-							q.offer(new int[] { 1, nx, ny });
-							check[1][nx][ny] = check[0][x][y] + 1;
-							if (nx == n - 1 && ny == m - 1) {
-								return check[1][nx][ny];
+					} 
+					// 다음 노드가 벽임
+					else {
+						if (wall == 0) { //이전에 벽 안부숨
+							if (visited[1][nx][ny] == 0) {
+								que.offer(new int[]{ 1, nx, ny });
+								visited[1][nx][ny] = visited[0][x][y] + 1;
+								if (nx == N - 1 && ny == M - 1) {
+									return visited[1][nx][ny];
+								}
 							}
 						}
 					}
 				}
-
-			}
-
-			if (q.isEmpty()) {
-				return -1;
 			}
 		}
-
+		return -1;
 	}
-
 }
