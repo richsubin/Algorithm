@@ -19,19 +19,16 @@ public class Main {
             sb.append(result+"\n");
         }
 
-
         bw.write(sb+"");
         bw.flush();
         bw.close();
         br.close();
     }
-
     private static int getLastPi(String str) {
         int len = str.length();
         int[] pi = new int[len];
         int index=0;
-        //반복되는 문자열 찾아서 몇 제곱인지 봐야함
-        //광고 문제랑 좀 비슷하게 그 전체길이에서 배열 마지막 값 빼주면 반복되는 문자열 길이 나옴
+
         for(int i=1;i<len;i++) {
             while(index>0 && str.charAt(index)!=str.charAt(i)) {
                 index = pi[index-1];
@@ -40,10 +37,6 @@ public class Main {
                 pi[i] = ++index;
             }
         }
-
-        if(len%(len-pi[len-1])==0)
-            return len / (len-pi[len-1]);
-        else
-            return 1;
+        return len%(len-pi[len-1])==0? len/(len-pi[len-1]) : 1;
     }
 }
