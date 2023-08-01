@@ -9,7 +9,6 @@ public class Main {
 		
 		int N = Integer.parseInt(br.readLine());
 		int[] predict = new int[N];
-		int[] real = new int[N];
 		long result = 0;
 		
 		for(int i=0;i<N;i++) {
