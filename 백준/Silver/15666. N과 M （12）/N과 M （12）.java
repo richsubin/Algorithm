@@ -1,8 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 	static int N, M;
@@ -19,7 +16,7 @@ public class Main {
 		for(int i=0;i<N;i++) {
 			numList[i] = Integer.parseInt(st.nextToken());
 		}
-		Arrays.sort(numList); // 오름차순 정렬
+		Arrays.sort(numList); // 오름차순 정렬 - 비내림차순
 		
 		tempList = new int[M]; // 출력용 값들 넣는 배열
 		dfs(0,0);
