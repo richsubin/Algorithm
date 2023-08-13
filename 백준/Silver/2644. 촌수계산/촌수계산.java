@@ -26,6 +26,7 @@ public class Main {
 		
 		int m = Integer.parseInt(br.readLine()); //부모 자식들 간 관계 수
 		
+		
 		for(int i = 0;i<m;i++) {
 			st = new StringTokenizer(br.readLine());
 			int x = Integer.parseInt(st.nextToken());
@@ -61,8 +62,6 @@ public class Main {
 					queue.offer(next);
 				}
 			}
-		}
-		
+		}	
 	}
-
 }
