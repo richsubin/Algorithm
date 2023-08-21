@@ -1,60 +1,61 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
+import java.util.*;
+import java.io.*;
 
 public class Main {
 	
-	public static void main(String[] args) throws IOException {
+	static int N, M;
+	static int[][] rel;
+	static final int INF = 999999999;
+	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		int[][] friends = new int[N][N];
-		int num = 1000000000;
-		for(int k=0;k<N;k++) {
-			Arrays.fill(friends[k],num);
-			friends[k][k] = 0;
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		
+		rel = new int[N+1][N+1];
+		
+		for(int i=1;i<=N;i++) {
+			for(int j=1;j<=N;j++) {
+				rel[i][j] = INF;
+				if(i == j) rel[i][j] = 0;
+			}
 		}
 		
-		for(int k=0;k<M;k++) {
+		for(int i=0;i<M;i++) {
 			st = new StringTokenizer(br.readLine());
-			int i = Integer.parseInt(st.nextToken())-1;
-			int j = Integer.parseInt(st.nextToken())-1;
-			friends[i][j] = friends[j][i] = 1;
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			
+			rel[a][b] = 1;
+			rel[b][a] = 1;
 		}
 		
-		
-		for(int k=0;k<N;k++) {
-			for(int i=0;i<N;i++) {
-				for(int j=0;j<N;j++) {
-					friends[i][j] = Math.min(friends[i][j], friends[i][k]+friends[k][j]);
+		for(int k=1;k<=N;k++) {
+			for(int i=1;i<=N;i++) {
+				for(int j=1;j<=N;j++) {
+					rel[i][j] = Math.min(rel[i][j], rel[i][k]+rel[k][j]);
 				}
 			}
 		}
-		
-		int index=0;
-		int total = num;
-		for(int i=0;i<N;i++) {
-			int temp = 0;
-			for(int j=0;j<N;j++) {				
-				temp+=friends[i][j];
+		int temp = INF;
+		int result = 0;
+		for(int i=1;i<=N;i++) {
+			int total = 0;
+			for(int j=1;j<=N;j++) {
+				total += rel[i][j];
 			}
-			if(total>temp) {
-				total = temp;
-				index = i+1;
-			}
+			
+			if(temp > total) {
+				temp = total;
+				result = i;
+			}	
 		}
 		
-		bw.write(String.valueOf(index));
+		bw.write(result+"");
 		bw.flush();
 		bw.close();
-		br.close();
 	}
+
 }
