@@ -14,11 +14,11 @@ public class Main {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		N = Integer.parseInt(st.nextToken()); //y축
-		M = Integer.parseInt(st.nextToken()); //x축
+		M = Integer.parseInt(st.nextToken()); //y축
+		N = Integer.parseInt(st.nextToken()); //x축
 		K = Integer.parseInt(st.nextToken());
 		
-		ddang = new int[N][M];
+		ddang = new int[M][N];
 		result = new ArrayList<>();
 		
 		for(int i=0;i<K;i++) {
@@ -35,8 +35,8 @@ public class Main {
 			}
 		}
 		
-		for(int i=0;i<N;i++) {
-			for(int j=0;j<M;j++) {
+		for(int i=0;i<M;i++) {
+			for(int j=0;j<N;j++) {
 				if(ddang[i][j] == 0) {
 					size=1;
 					dfs(i, j);
@@ -65,7 +65,7 @@ public class Main {
 			int nx = dx[i]+x;
 			int ny = dy[i]+y;
 			
-			if(nx>=0 && ny >=0 && nx<M && ny<N && ddang[ny][nx]==0) {
+			if(nx>=0 && ny >=0 && nx<N && ny<M && ddang[ny][nx]==0) {
 				size++;
 				dfs(ny,nx);
 			}
