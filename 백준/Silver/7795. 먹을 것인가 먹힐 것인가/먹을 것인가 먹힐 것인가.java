@@ -14,8 +14,8 @@ public class Main{
 			int N = Integer.parseInt(st.nextToken());
 			int M = Integer.parseInt(st.nextToken());
 			
-			Integer[] A = new Integer[N];
-			Integer[] B = new Integer[M];
+			int[] A = new int[N];
+			int[] B = new int[M];
 			
 			st = new StringTokenizer(br.readLine());
 			for(int i=0;i<N;i++) {
@@ -27,18 +27,22 @@ public class Main{
 				B[i] = Integer.parseInt(st.nextToken());
 			}
 			
-			Arrays.sort(A,Collections.reverseOrder());
-			Arrays.sort(B, Collections.reverseOrder());
+			Arrays.sort(B);
 			int temp = 0;
 			for(int i=0;i<N;i++) {
-				int cnt = 0;
-				for(int j=0;j<M;j++) {
-					if(A[i]>B[j]) {
-						temp+=(M-cnt);
-						break;
+				int low = 0;
+				int high = M-1;
+				int index = 0;
+				while(low<=high) {
+					int mid = (low+high)/2; //중간값
+					if(B[mid]<A[i]) {
+						low = mid+1;
+						index = mid+1;
 					}
-					else cnt++;
+					else
+						high = mid-1;
 				}
+				temp+=index;
 			}
 			result.append(temp+"\n");
 		}
