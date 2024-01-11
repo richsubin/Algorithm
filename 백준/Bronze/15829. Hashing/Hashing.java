@@ -9,13 +9,13 @@ public class Main {
 		int L = Integer.parseInt(br.readLine());
 		long result = 0;
 		String str = br.readLine();
-		int r = 1;
+		long r = 1;
 		for(int i=0;i<L;i++) {
 			result += (str.charAt(i)-96) * r;
 			r = (r * 31) % 1234567891;
 		}
 		
-		bw.write(result+"");
+		bw.write(result % 1234567891+"");
 		bw.flush();
 		bw.close();
 	}
